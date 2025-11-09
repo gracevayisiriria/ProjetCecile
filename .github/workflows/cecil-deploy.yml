@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:  # Permet aussi de lancer manuellement le workflow depuis GitHub
 
 jobs:
   build:
@@ -12,22 +13,31 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # important pour certaines fonctionnalités (comme les dates de commit dans Cecil)
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           tools: composer
+          coverage: none
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --no-check-publish
 
       - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist
+        run: composer install --no-interaction --prefer-dist --no-progress
+
       - name: Install Fontawesome theme
         run: |
           mkdir -p themes
-          git clone https://github.com/Cecilapp/theme-fontawesome.git themes/fontawesome
+          if [ ! -d "themes/fontawesome" ]; then
+            git clone https://github.com/Cecilapp/theme-fontawesome.git themes/fontawesome
+          fi
 
       - name: Build site with Cecil
-        run: php vendor/bin/cecil build --baseurl=https://gracevayisiriria.github.io/ProjetCecile/
+        run: php vendor/bin/cecil build --baseurl=https://gracevayisiriria.github.io/ProjetCecile/ --verbose
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
