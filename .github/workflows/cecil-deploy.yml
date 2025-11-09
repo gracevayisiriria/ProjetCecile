@@ -21,51 +21,23 @@ jobs:
         with:
           php-version: '8.2'
           tools: composer
-          coverage: none
-
-      - name: Install git
-        run: sudo apt-get update && sudo apt-get install -y git
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate --no-check-publish
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Ensure themes folder and install themes
+      - name: Install all themes
         run: |
           mkdir -p themes
           echo "Installing Cecil themes..."
-          if [ ! -d "themes/fontawesome" ]; then
-            git clone https://github.com/Cecilapp/theme-fontawesome.git themes/fontawesome
-          else
-            echo "Fontawesome theme already exists."
-          fi
-
-          if [ ! -d "themes/links" ]; then
-            git clone https://github.com/Cecilapp/theme-links.git themes/links
-          else
-            echo "Links theme already exists."
-          fi
-
+          for theme in fontawesome links pwa; do
+            if [ ! -d "themes/$theme" ]; then
+              git clone https://github.com/Cecilapp/theme-$theme.git themes/$theme
+            else
+              echo "$theme theme already exists."
+            fi
+          done
           echo "Themes installed:"
           ls themes
-      - name: Ensure themes folder and install themes
-        run: |
-          mkdir -p themes
-          if [ ! -d "themes/fontawesome" ]; then
-            git clone https://github.com/Cecilapp/theme-fontawesome.git themes/fontawesome
-          fi
-          if [ ! -d "themes/links" ]; then
-            git clone https://github.com/Cecilapp/theme-links.git themes/links
-          fi
-      - name: Install PWA theme
-        run: |
-          mkdir -p themes
-          if [ ! -d "themes/pwa" ]; then
-            git clone https://github.com/Cecilapp/theme-pwa.git themes/pwa
-          fi
-
 
       - name: Build site with Cecil
         run: php vendor/bin/cecil build --baseurl=https://gracevayisiriria.github.io/ProjetCecile/ --verbose
