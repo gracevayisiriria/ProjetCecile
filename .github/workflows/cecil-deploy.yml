@@ -59,6 +59,13 @@ jobs:
           if [ ! -d "themes/links" ]; then
             git clone https://github.com/Cecilapp/theme-links.git themes/links
           fi
+      - name: Install PWA theme
+        run: |
+          mkdir -p themes
+          if [ ! -d "themes/pwa" ]; then
+            git clone https://github.com/Cecilapp/theme-pwa.git themes/pwa
+          fi
+
 
       - name: Build site with Cecil
         run: php vendor/bin/cecil build --baseurl=https://gracevayisiriria.github.io/ProjetCecile/ --verbose
