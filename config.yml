@@ -1,4 +1,33 @@
-baseurl: "https://MIGHERIChristien.github.io/Christienprojetcecil/"
-title: "Site de Christien Migheri"
+title: "Grace Vayisiriria"
+baseline: "Développeur Etudiant passionné"
+description: "Développeuse passionnée par la technologie, les projets innovants et le partage de connaissances."
 
+params:
+  author: "Grace Vayisiriria"
+  github: "https://github.com/gracevayisiriria"
+  email: "grace@example.com"
+  social:
+    - name: "GitHub"
+      icon: "fab fa-github"
+      url: "https://github.com/gracevayisiriria"
+    - name: "LinkedIn"
+      icon: "fab fa-linkedin"
+      url: "#"
+    - name: "Twitter"
+      icon: "fab fa-twitter"
+      url: "#"
 
+menu:
+  main:
+    - name: "Accueil"
+      url: "/"
+      weight: 1
+    - name: "Projets"
+      url: "/projets/"
+      weight: 2
+    - name: "Blog"
+      url: "/blog/"
+      weight: 3
+    - name: "Contact"
+      url: "/contact/"
+      weight: 4
